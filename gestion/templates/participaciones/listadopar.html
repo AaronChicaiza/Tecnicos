@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="card-title fw-semibold">Mis Participaciones</h5>
+            <a href="{% url 'nuevopar' %}" class="btn btn-primary">
+                <i class="ti ti-plus"></i> Inscribirme a un nuevo curso
+            </a>
+        </div>
+        
+        <div class="table-responsive">
+            <table id="tbl_participaciones" class="table table-hover table-striped table-bordered align-middle">
+                <thead>
+                    <tr>
+                        <th>Curso</th>
+                        <th>Instructor</th>
+                        <th>Estado</th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in participaciones %}
+                    <tr>
+                        <td>{{ p.curso.nombre }}</td>
+                        <td>{{ p.curso.instructor }}</td>
+                        <td>
+                            <span class="badge bg-success">Inscrito</span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center">Aún no te has inscrito en ningún curso.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+// Inicialización de DataTable específica
+$(document).ready(function() {
+    new DataTable('#tbl_participaciones', {
+        language: {
+            search: "Buscar:",
+            lengthMenu: "Mostrar _MENU_ registros",
+            info: "Mostrando _START_ a _END_ de _TOTAL_ resultados"
+        }
+    });
+});
+</script>
+{% endblock %}

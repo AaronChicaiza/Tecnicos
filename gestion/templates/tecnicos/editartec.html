@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Estilos para las alertas de error */
+    input:invalid { border: 2px solid red; }
+    .error-message { display: none; color: red; font-size: 0.8rem; }
+    input:invalid + .error-message { display: block; }
+</style>
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title fw-semibold mb-4">Editar Técnico</h5>
+    
+    <form action="{% url 'actualizarTecnico' tecnico.id %}" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Cédula</label>
+          <input type="text" name="cedula" value="{{ tecnico.cedula }}" class="form-control" pattern="\d{10}" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Nombres</label>
+          <input type="text" name="nombres" value="{{ tecnico.nombres }}" class="form-control" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Apellidos</label>
+          <input type="text" name="apellidos" value="{{ tecnico.apellidos }}" class="form-control" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Correo</label>
+          <input type="email" name="correo" value="{{ tecnico.correo }}" class="form-control" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Teléfono</label>
+          <input type="text" name="telefono" value="{{ tecnico.telefono }}" class="form-control" pattern="\d{7,10}" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Cargo</label>
+          <input type="text" name="cargo" value="{{ tecnico.cargo }}" class="form-control" required>
+        </div>
+
+        <div class="col-md-12 mb-3">
+            <label class="form-label">Foto Actual</label><br>
+            {% if tecnico.foto %}
+                <img src="{{ tecnico.foto.url }}" width="100" class="rounded mb-2">
+            {% else %}
+                <p>No tiene foto cargada.</p>
+            {% endif %}
+        </div>
+        <div class="col-md-12 mb-3">
+            <label class="form-label">Cambiar Foto</label>
+            <input type="file" name="foto" class="form-control" accept="image/*">
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+      <a href="{% url 'listadoTecnicos' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

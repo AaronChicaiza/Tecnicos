@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* CSS para mostrar los errores en rojo */
+    input:invalid {
+        border: 2px solid red;
+    }
+    input:invalid + .error-message {
+        display: block;
+        color: red;
+        font-size: 0.8rem;
+    }
+    .error-message {
+        display: none;
+    }
+</style>
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title fw-semibold mb-4">Registrar Nuevo Técnico</h5>
+    <form action="{% url 'guardarTecnico' %}" method="POST">
+      {% csrf_token %}
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Cédula</label>
+          <input type="text" name="cedula" class="form-control" 
+                 pattern="\d{10}" title="Debe contener exactamente 10 números" required>
+          <span class="error-message">Debe ingresar exactamente 10 números.</span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Nombres</label>
+          <input type="text" name="nombres" class="form-control" 
+                 pattern="[A-Za-z\s]{3,50}" title="Solo letras, mínimo 3 caracteres" required>
+          <span class="error-message">Solo letras, mínimo 3 caracteres.</span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Apellidos</label>
+          <input type="text" name="apellidos" class="form-control" 
+                 pattern="[A-Za-z\s]{3,50}" title="Solo letras, mínimo 3 caracteres" required>
+          <span class="error-message">Solo letras, mínimo 3 caracteres.</span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Correo</label>
+          <input type="email" name="correo" class="form-control" required>
+          <span class="error-message">Ingrese un correo válido.</span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Teléfono</label>
+          <input type="text" name="telefono" class="form-control" 
+                 pattern="\d{7,10}" title="Debe tener entre 7 y 10 números" required>
+          <span class="error-message">Ingrese entre 7 y 10 números.</span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Cargo</label>
+          <input type="text" name="cargo" class="form-control" 
+                 pattern="[A-Za-z0-9\s]{3,30}" title="Mínimo 3 caracteres, máximo 30" required>
+          <span class="error-message">Mínimo 3 y máximo 30 caracteres.</span>
+        </div>
+         <div class="col-md-12 mb-3">
+
+        <label class="form-label">Foto de Perfil</label>
+
+        <input type="file" name="foto" class="form-control" accept="image/*">
+
+        <small class="text-muted">Formatos aceptados: JPG, PNG</small>
+
+        </div>
+
+      </div>
+      <button type="submit" class="btn btn-primary">Guardar Técnico</button>
+      <a href="{% url 'listadoTecnicos' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Estilo para errores visuales */
+    input:invalid, textarea:invalid { border: 2px solid red; }
+    .error-message { display: none; color: red; font-size: 0.8rem; }
+    input:invalid + .error-message, textarea:invalid + .error-message { display: block; }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title fw-semibold mb-4">Editar Curso</h5>
+        
+        <form action="{% url 'actualizarCurso' curso.id %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label>Nombre del Curso</label>
+                    <input type="text" name="nombre" value="{{ curso.nombre }}" class="form-control" 
+                           pattern="[A-Za-z0-9\s]{3,50}" title="3-50 caracteres" required>
+                    <span class="error-message">Mínimo 3 caracteres alfanuméricos.</span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label>Instructor</label>
+                    <input type="text" name="instructor" value="{{ curso.instructor }}" class="form-control" 
+                           pattern="[A-Za-z\s]{3,50}" title="Solo letras, 3-50 caracteres" required>
+                    <span class="error-message">Solo letras, mínimo 3 caracteres.</span>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label>Descripción</label>
+                <textarea name="descripcion" class="form-control" rows="3" minlength="10" required>{{ curso.descripcion }}</textarea>
+                <span class="error-message">La descripción debe tener al menos 10 caracteres.</span>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label>Fecha Inicio</label>
+                    <input type="date" name="fecha_inicio" value="{{ curso.fecha_inicio|date:'Y-m-d' }}" class="form-control" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Fecha Fin</label>
+                    <input type="date" name="fecha_fin" value="{{ curso.fecha_fin|date:'Y-m-d' }}" class="form-control" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Total Horas</label>
+                    <input type="number" name="horas" value="{{ curso.horas }}" class="form-control" 
+                           min="1" max="24" required>
+                    <span class="error-message">Ingrese un número entre 1 y 24.</span>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Imagen Actual</label><br>
+                {% if curso.imagen %}
+                    <img src="{{ curso.imagen.url }}" width="150" class="rounded mb-2 shadow-sm">
+                {% else %}
+                    <p class="text-muted">No tiene imagen cargada.</p>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Cambiar Imagen</label>
+                <input type="file" name="imagen" class="form-control" accept="image/*">
+            </div>
+            
+            <button type="submit" class="btn btn-success">Guardar Cambios</button>
+            <a href="{% url 'listadoCursos' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

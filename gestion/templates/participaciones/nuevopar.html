@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Inscribir en Curso</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{% url 'nuevopar' %}">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Seleccionar Técnico</label>
+                            {% if perfil.rol == 'admin' %}
+                                <select name="tecnico_id" class="form-select" required>
+                                    <option value="" disabled selected>Elige un técnico...</option>
+                                    {% for t in tecnicos %}
+                                        <option value="{{ t.id }}">{{ t.nombres }} {{ t.apellidos }}</option>
+                                    {% endfor %}
+                                </select>
+                            {% else %}
+                                <input type="text" class="form-control" value="{{ request.user.first_name }} {{ request.user.last_name }}" disabled>
+                                <input type="hidden" name="tecnico_id" value="{{ tecnico_logueado.id }}">
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Seleccionar Curso</label>
+                            <select name="curso_id" class="form-select" required>
+                                <option value="" disabled selected>Elige un curso...</option>
+                                {% for c in cursos %}
+                                    <option value="{{ c.id }}">{{ c.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                Confirmar Inscripción
+                            </button>
+                        </div>
+                    </form> </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="card-title fw-semibold">Gestión de Certificados</h5>
+        </div>
+
+        <div class="table-responsive">
+            <table id="tbl_certificados" class="table table-hover table-striped table-bordered align-middle">
+                <thead>
+                    <tr>
+                        <th>Técnico</th>
+                        <th>Curso</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in participaciones %}
+                    <tr>
+                        <td>{{ p.tecnico.nombres }} {{ p.tecnico.apellidos }}</td>
+                        <td>{{ p.curso.nombre }}</td>
+                        <td class="text-center">
+                            <a href="{% url 'listadocer' p.id %}" class="btn btn-sm btn-outline-info" title="Descargar PDF">
+                                <i class="ti ti-file-pdf"></i> PDF
+                            </a>
+                            
+                            {% if perfil.rol == 'admin' %}
+                                <a href="{% url 'eliminarParticipacion' p.id %}" 
+                                   class="btn btn-sm btn-outline-danger" 
+                                   onclick="confirmarEliminacion(event, this.href)"
+                                   title="Eliminar">
+                                   <i class="ti ti-trash"></i> Eliminar
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+function confirmarEliminacion(event, url){
+    event.preventDefault();
+    Swal.fire({
+        title: "¿Estás seguro?",
+        text: "¡Esta acción eliminará el registro permanentemente!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = url;
+        }
+    });
+}
+
+$(document).ready(function() {
+    // Inicialización de la tabla
+    if (!$.fn.DataTable.isDataTable('#tbl_certificados')) {
+        $('#tbl_certificados').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

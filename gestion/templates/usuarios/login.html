@@ -1,0 +1,64 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login - Sistema de Técnicos</title>
+  <link rel="stylesheet" href="{% static 'assets/css/styles.min.css' %}" />
+  
+  <style>
+    body {
+      /* Aquí cargamos la imagen de fondo */
+      background-image: url("{% static 'assets/images/cursoss.jpg' %}");
+      
+      /* Propiedades para que la imagen se vea bien */
+      background-size: cover;          /* Cubre toda la pantalla */
+      background-position: center;     /* Centra la imagen */
+      background-repeat: no-repeat;    /* No se repite */
+      background-attachment: fixed;    /* Fija la imagen al scroll */
+      height: 100vh;
+      margin: 0;
+    }
+
+    /* Opcional: capa oscura para que el texto blanco se lea mejor */
+    .overlay {
+      background: rgba(0, 0, 0, 0.5); 
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="overlay">
+    <div class="card shadow" style="width: 400px; border-radius: 15px;">
+      <div class="card-body">
+        <h4 class="text-center mb-4">Iniciar Sesión</h4>
+        
+        {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+
+        <form method="POST" action="{% url 'login' %}">
+          {% csrf_token %}
+          
+          <div class="mb-3">
+            <label>Usuario</label>
+            <input type="text" name="username" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label>Contraseña</label>
+            <input type="password" name="password" class="form-control" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

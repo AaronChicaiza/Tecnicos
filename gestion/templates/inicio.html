@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Perfil de {{ user.username }}</h4>
+        <p><strong>Rol:</strong> {{ user.perfil.rol|capfirst }}</p>
+        <hr>
+
+        {% if user.perfil.rol == 'admin' %}
+            <div class="alert alert-info">
+                Bienvenido Administrador. Tienes acceso a la gestión total del sistema.
+            </div>
+            {% else %}
+            <div class="alert alert-success">
+                Bienvenido Técnico. Puedes gestionar tus cursos y participaciones.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

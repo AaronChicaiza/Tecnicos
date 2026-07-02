@@ -1,0 +1,96 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sistema de Gestión de Técnicos</title>
+  <link rel="shortcut icon" type="image/png" href="{% static 'assets/images/logos/favicon.png' %}" />
+  <link rel="stylesheet" href="{% static 'assets/css/styles.min.css' %}" />
+  
+  <link rel="stylesheet" href="{% static 'css/dataTables.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/sweetalert2.min.css' %}">
+
+  <link rel="stylesheet" href="{% static 'css/dropzone.min.css' %}">
+
+  
+</head>
+
+<body>
+  <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+
+    <aside class="left-sidebar">
+      <div>
+        <div class="brand-logo d-flex align-items-center justify-content-between">
+          <a href="{% url 'inicio' %}" class="text-nowrap logo-img">
+            <img src="{% static 'assets/images/logos/logo.svg' %}" alt="" />
+          </a>
+        </div>
+        
+        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+          <ul id="sidebarnav">
+            <li class="nav-small-cap"><span class="hide-menu">MENU PRINCIPAL</span></li>
+            <li class="sidebar-item"><a class="sidebar-link" href="{% url 'inicio' %}">Dashboard</a></li>
+
+            <li class="nav-small-cap"><span class="hide-menu">GESTIÓN ACADÉMICA</span></li>
+            {% if perfil.rol == 'admin' %}
+                <li class="sidebar-item"><a class="sidebar-link" href="{% url 'listadoTecnicos' %}">Técnicos</a></li>
+                <li class="sidebar-item"><a class="sidebar-link" href="{% url 'listadoCursos' %}">Cursos</a></li>
+            {% endif %}
+            <li class="sidebar-item"><a class="sidebar-link" href="{% url 'listadoParticipaciones' %}">Participaciones</a></li>
+            <li class="sidebar-item"><a class="sidebar-link" href="{% url 'listadoCertificados' %}">Certificados y QR</a></li>
+
+            <li class="nav-small-cap"><span class="hide-menu">SISTEMA</span></li>
+            <li class="sidebar-item">
+                <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="sidebar-link" style="border:none; background:none; width:100%; text-align:left; cursor:pointer;">
+                        Cerrar Sesión
+                    </button>
+                </form>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </aside>
+
+    <div class="body-wrapper">
+      <div class="container-fluid" style="margin-top: 20px;">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/dataTables.min.js' %}"></script>
+  <script src="{% static 'js/jquery.validate.js' %}"></script>
+  <script src="{% static 'js/additional-methods.min.js' %}"></script>
+  <script src="{% static 'js/sweetalert2.min.js' %}"></script>
+  
+  <script src="{% static 'assets/js/sidebarmenu.js' %}"></script>
+  <script src="{% static 'assets/js/app.min.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'js/dropzone.min.js' %}"></script>
+
+  {% if messages %}
+      {% for mensaje in messages %}
+          <script>
+              Swal.fire({
+                  title: 'CONFIRMACIÓN',
+                  icon: 'success',
+                  text: "{{ mensaje|escapejs }}"
+              });
+          </script>
+      {% endfor %}
+  {% endif %}
+
+  <script>
+      $(document).ready(function() {
+          $('.table').DataTable();
+      });
+  </script>
+</body>
+</html>

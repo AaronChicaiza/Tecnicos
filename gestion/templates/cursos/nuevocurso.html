@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Estilo para errores visuales */
+    input:invalid, textarea:invalid { border: 2px solid red; }
+    .error-message { display: none; color: red; font-size: 0.8rem; }
+    input:invalid + .error-message, textarea:invalid + .error-message { display: block; }
+</style>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title fw-semibold mb-4">Registrar Nuevo Curso</h5>
+        
+        <form action="{% url 'guardarCurso' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label>Nombre del Curso</label>
+                    <input type="text" name="nombre" class="form-control" 
+                           pattern="[A-Za-z0-9\s]{3,50}" title="3-50 caracteres" required>
+                    <span class="error-message">Mínimo 3 caracteres alfanuméricos.</span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label>Instructor</label>
+                    <input type="text" name="instructor" class="form-control" 
+                           pattern="[A-Za-z\s]{3,50}" title="Solo letras, 3-50 caracteres" required>
+                    <span class="error-message">Solo letras, mínimo 3 caracteres.</span>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label>Descripción</label>
+                <textarea name="descripcion" class="form-control" rows="3" minlength="10" required></textarea>
+                <span class="error-message">La descripción debe tener al menos 10 caracteres.</span>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label>Fecha Inicio</label>
+                    <input type="date" name="fecha_inicio" class="form-control" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Fecha Fin</label>
+                    <input type="date" name="fecha_fin" class="form-control" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Total Horas</label>
+                    <input type="number" name="horas" class="form-control" min="1" max="24" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Imagen del Curso</label>
+                <input type="file" name="imagen" class="form-control" accept="image/*">
+                <small class="text-muted">Selecciona una imagen representativa para el curso.</small>
+            </div>
+            
+            <button type="submit" class="btn btn-success">Guardar Curso</button>
+            <a href="{% url 'listadoCursos' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
